@@ -3,9 +3,17 @@
 #include <string>
 #include <set>
 #include <cassert>
+#include <exception>
 using namespace std;
 
 using Synonims = map<string, set<string>>; 
+
+template<typename T, typename U>
+void AssertEqual(const T& t, const U& u, const string& hint){
+    if (t != u){
+        throw runtime_error("AssertEqual failed: " + to_string(t) + " != " + to_string(u) + ", hint: " + hint);
+    }
+}
 
 void AddSynonims(Synonims& synonims, const string& first_word, const string& second_word){
     synonims[second_word].insert(first_word);
@@ -51,7 +59,7 @@ void TestAddSynonims(){
 void TestSynonimsCount(){
     {
         Synonims empty;
-        assert(GetSynonimCount(empty, "a") == 0);
+        AssertEqual(GetSynonimCount(empty, "a"), 0, "count for a (str: 62)");
     }
     {
         Synonims synonims = {
@@ -59,9 +67,9 @@ void TestSynonimsCount(){
             {"b" , {"a"}},
             {"c" , {"a"}},
         };
-        assert(GetSynonimCount(synonims, "a") == 2);
-        assert(GetSynonimCount(synonims, "b") == 1);
-        assert(GetSynonimCount(synonims, "z") == 0);
+        AssertEqual(GetSynonimCount(synonims, "a"), 2, "count for a (str: 70)");
+        AssertEqual(GetSynonimCount(synonims, "b"), 1, "count for b (str: 71)");
+        AssertEqual(GetSynonimCount(synonims, "z"), 0, "count for z (str: 72)");
     }
     cout << "Test Synonims count is passed" << endl;
 }

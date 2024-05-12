@@ -1,0 +1,23 @@
+1. Example using unitTest through exception:
+    #include <iostream>
+    #include <map>
+    #include <string>
+    #include <set>
+    #include <cassert>
+    #include <exception>
+    using namespace std;
+
+    using Synonims = map<string, set<string>>; 
+
+    template<typename T, typename U>
+    void AssertEqual(const T& t, const U& u, const string& hint){
+        if (t != u){
+            throw runtime_error("AssertEqual failed: " + to_string(t) + " != " + to_string(u) + ", hint: " + hint);
+        }
+    }
+
+    calling function:
+        AssertEqual(GetSynonimCount(synonims, "a"), 2, "count for a (str: 70)");
+
+F:\c-plus-plus-modern-development\c-plus-plus-yellow\02_tiestirovaniie-i-otladka\02_razrabotka-frieimvorka-iunit-tiestov-nachalo
+[3]
