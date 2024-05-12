@@ -1,0 +1,209 @@
+Example of unit test:
+    #include <iostream>
+    #include <cassert>
+    using namespace std;
+
+    int Sum(int x, int y){
+        return x + y;
+    }
+
+    void TestSum(){
+        assert(Sum(2, 3) == 5);
+        assert(Sum(-2, 2) == 0);
+        assert(Sum(2, 0) == 2);
+        assert(Sum(-3, -2) == -6);
+        cout << "Test Sum is OK" << endl;
+    }
+
+    int main(){
+        TestSum();
+        return 0;
+    }
+
+Example of problem that we have:
+    #include <iostream>
+    #include <map>
+    #include <string>
+    #include <set>
+    using namespace std;
+
+
+    int main(){
+        int q;
+        cin >> q;
+        map<string, set<string>> synonims;
+
+        for(size_t i = 0; i < q; i++){
+            string operation_code;
+            cin >> operation_code;
+            if(operation_code == "ADD"){
+                string first_word, second_word;
+                cin >> first_word, second_word;
+                synonims[second_word].insert(first_word);
+                synonims[first_word].insert(first_word);
+            }else if(operation_code == "COUNT"){
+                string word;
+                cin >> word;
+                cout << synonims[word].size() << endl;
+            }else if( operation_code == "CHECK"){
+                string first_word, second_word;
+                cin >> first_word >> second_word;
+                if(synonims[first_word].count(second_word) == 1){
+                    cout << "YES" << endl;
+                }else{
+                    cout << "NO" << endl;
+                }
+            }
+        }
+        return 0;
+    }
+
+2. We should decompose this problem:
+    a. Sepparate processing of the datas and their output
+        #include <iostream>
+        #include <map>
+        #include <string>
+        #include <set>
+        using namespace std;
+
+        void AddSynonims(map<string, set<string>>& synonims, const string& first_word, const string& second_word){
+            synonims[second_word].insert(first_word);
+            synonims[first_word].insert(first_word);
+        }
+
+        int GetSynonimCount(map<string, set<string>>& synonims, const string& word){
+            return synonims[word].size();
+        }
+
+        bool CheckSynonim(map<string, set<string>>& synonims, const string& first_word, const string& second_word){
+            return synonims[first_word].count(second_word) == 1;
+        }
+
+        int main(){
+            int q;
+            cin >> q;
+            map<string, set<string>> synonims;
+
+            for(size_t i = 0; i < q; i++){
+                string operation_code;
+                cin >> operation_code;
+                if(operation_code == "ADD"){
+                    string first_word, second_word;
+                    cin >> first_word, second_word;
+                    AddSynonims(synonims, first_word, second_word);
+                }else if(operation_code == "COUNT"){
+                    string word;
+                    cin >> word;
+                    cout << GetSynonimCount(synonims, word) << endl;
+                }else if( operation_code == "CHECK"){
+                    string first_word, second_word;
+                    cin >> first_word >> second_word;
+                    if(CheckSynonim(synonims, first_word, second_word)){
+                        cout << "YES" << endl;
+                    }else{
+                        cout << "NO" << endl;
+                    }
+                }
+            }
+            return 0;
+        }
+
+3. Whole code of utin tests for problem Synonims:
+    #include <iostream>
+    #include <map>
+    #include <string>
+    #include <set>
+    #include <cassert>
+    using namespace std;
+
+    using Synonims = map<string, set<string>>; 
+
+    void AddSynonims(Synonims& synonims, const string& first_word, const string& second_word){
+        synonims[second_word].insert(first_word);
+        // synonims[first_word].insert(first_word); // that is not right
+        synonims[first_word].insert(second_word); // that is right
+    }
+
+    int GetSynonimCount(Synonims& synonims, const string& word){
+        return synonims[word].size();
+    }
+
+    bool CheckSynonim(Synonims& synonims, const string& first_word, const string& second_word){
+        return synonims[first_word].count(second_word) == 1;
+    }
+
+    void TestAddSynonims(){
+        {
+            Synonims empty;
+            AddSynonims(empty, "a", "b");
+            const Synonims expected = {
+                {"a", {"b"}},
+                {"b", {"a"}},
+            };
+            assert(empty == expected);
+        }
+        {
+            Synonims synonims = {
+                {"a" , {"b"}},
+                {"b" , {"a", "c"}},
+                {"c" , {"b"}},
+            };
+            AddSynonims(synonims, "a", "c");
+            const Synonims expected = {
+                {"a" , {"b", "c"}},
+                {"b" , {"a", "c"}},
+                {"c" , {"b", "a"}},
+            };
+            assert(synonims == expected);
+        }
+        cout << "Test AddSynonims is passed" << endl;
+    }
+
+    void TestSynonimsCount(){
+        {
+            Synonims empty;
+            assert(GetSynonimCount(empty, "a") == 0);
+        }
+        {
+            Synonims synonims = {
+                {"a" , {"b", "c"}},
+                {"b" , {"a"}},
+                {"c" , {"a"}},
+            };
+            assert(GetSynonimCount(synonims, "a") == 2);
+            assert(GetSynonimCount(synonims, "b") == 1);
+            assert(GetSynonimCount(synonims, "z") == 0);
+        }
+        cout << "Test Synonims count is passed" << endl;
+    }
+
+    void TestCheckSynonim(){
+        {
+            Synonims empty;
+            assert(CheckSynonim(empty, "a", "b") == false);
+        }
+        {
+            Synonims synonims = {
+                {"a" , {"b", "c"}},
+                {"b" , {"a"}},
+                {"c" , {"a"}},
+            };
+            assert(CheckSynonim(synonims, "a", "b") == true);
+            assert(CheckSynonim(synonims, "b", "a") == true);
+            assert(CheckSynonim(synonims, "a", "c") == true);
+            assert(CheckSynonim(synonims, "c", "a") == true);
+            assert(CheckSynonim(synonims, "b", "c") == false);
+        }
+        cout << "Test CheckSynonims is passed" << endl;
+    }
+
+    void TestProgramm(){
+        TestSynonimsCount();
+        TestCheckSynonim();
+        TestAddSynonims();
+    }
+
+    int main(){
+        TestProgramm();
+        return 0;
+    }
