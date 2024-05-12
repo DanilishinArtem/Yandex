@@ -1,0 +1,76 @@
+ifstream, ofstream, fstream:
+
+1. Using fstream (read datas out of the file):
+    #include <fstream>
+    #include <iostream>
+    #include <string>
+    using namespace std;
+
+    int main(){
+        fstream input("practicalExample_.txt");
+        string line;
+        if(input.is_open()){
+            while(getline(input, line)){
+                cout << line << endl;
+            }
+        }else{
+            cout << "Error, file doesn't exist" << endl;
+        }
+        return 0;
+    }
+
+2. Using ofstream (write datas to the file):
+    #include <fstream>
+    #include <iostream>
+    #include <string>
+    using namespace std;
+
+    int main(){
+        const string path = "streamTest.txt";
+        ofstream output(path);
+        if(output.is_open()){
+            output << "First line" << endl;
+            output << "Second line" << endl;
+        }
+        output.close();
+
+        string line;
+        ifstream input(path);
+        if(input.is_open()){
+            while(getline(input, line)){
+                cout << line << endl;
+            }
+        }
+
+        return 0;
+    }
+
+    Exclaim:
+        if we need to continue write to the file we should do like this:
+            ofstream output(path, ios::app); // ios::app - append
+
+3. Formating:
+    #include <fstream>
+    #include <iostream>
+    #include <string>
+    #include <iomanip>
+    #include <vector>
+    using namespace std;
+
+    int main(){
+        vector<string> names = {"a","b","c"};
+        vector<double> values = {5, 0.1, 0.0001};
+
+        cout << setfill('.');
+        cout << left;
+        for(const string& n : names){
+            cout << setw(10) << n << " ";
+        }
+        cout << endl;
+        cout << fixed << setprecision(5);
+        for(const double& v : values){
+            cout << setw(10) << v << " ";
+        }
+        cout << endl;
+        return 0;
+    }

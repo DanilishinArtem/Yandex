@@ -1,0 +1,314 @@
+1. Basic algorithms:
+    #include <algorithm>
+    * min(a, b);
+    * max(a, b);
+    * Sort funtion:
+        vector<int> v = {1, 3, 5, 2, 3, 4, 3};
+        sort(begin(v), end(v));
+    * Count a number of element:
+        count(begin(v), end(v), 2);
+    * Count a number of element with a condition (property):
+        bool moreThen(int number){
+            if(number > 2){
+                return true;
+            }else{
+                return false;
+            }
+        }
+        count_if(begin(v), end(v), moreThen);
+
+        # Realization with lambda expression:
+        int thr;
+        cin >> thr;
+        count_if(begin(v), end(v), [thr](int x){
+            if(x > thr){
+                return true;
+            }else{
+                return false;
+            }
+        });
+
+2. modification of elements in the vector
+    Example:
+    int main(){
+        vector<int> v = {1, 3, 5, 2, 3, 4, 3};
+        printVector(v);
+        for(auto& item : v){
+            ++item;
+        }
+        printVector(v);
+    }
+
+3. visibility of variables:
+    Examle 1:
+    #include <iostream>
+    using namespace std;
+    int main(){
+        {
+            int x = 5;
+            {
+                cout << x;
+            }
+            cout << x;
+        }
+        cout << x; // it will be an error because variables are seen inside aperator breakets!!!
+        return 0;
+    }
+
+    Example 2:
+    #include <iostream>
+    using namespace std;
+    int main(){
+        string s = "Hello";
+        {
+            stirng s = "World";
+            cout << s << endl;
+        }
+        cout << s << endl;
+    }
+    Result:
+        World
+        Hello
+
+4. Value of uninitialized variable is undefined:
+    #include <iostream>
+    using namespace std;
+    void printInt_(){
+        int x;
+        cout << x << endl;
+    }
+    void printPi(){
+        double pi = 3.14;
+        cout << pi << endl;
+    }
+    int main(){
+        printInt_();
+        printPi();
+        printInt_();
+        return 0;
+    }
+
+5. Ternary operator:
+    string s = (x % 2 == 0) ? "even" : "odd";
+
+6. Namespace:
+    #include <iostream>
+    using namespace std;
+
+    namespace mynames{
+        int x = 5;
+        double y = 3.14;
+    }
+    int main(){
+        int x = 555;
+        double y = 4.13;
+        cout << "from main: " << x << " " << y << endl;
+        cout << "from mynames: " << mynames::x << " " << mynames::y << endl;
+        return 0;
+    }
+    output:
+        from main: 555 4.13
+        from main: 555 4.13
+
+7. OOP: ------------------------------------------------
+    Structures:
+        struct Lecture{
+            string name;
+            int duration;
+            string autor;
+        };
+        int main(){
+            // declaraton of the struct
+            Lecture lecture1 = {"OOP", 5400, "Anton"};
+        }
+    Access to the structure's variables:
+        struct Route{
+            private:
+                string source;
+                string destination;
+                int length;
+        };
+        main(){
+            Route route1;
+            route1.source = "Moscow"; // forbiden (as a privat access!!!)
+            cout << route.length << endl; // forbidden (as a privat access!!!)
+            // i have no access to the internal variables (no read and no write) 
+        }
+    Methods: --> solve above problem (using class(incapsulation property))
+        class Route{
+            public:
+                string getSource(){return source};
+                string getDestibation(){return destination};
+                int getLength(){return length};
+            private:
+                string source;
+                string destination;
+                int length;
+        };
+
+8. Constanity:
+    Example:
+        #include <iostream>
+        using namespace std;
+
+        class Route{
+            private:
+                string source{};
+                string destination{};
+                int length{};
+            public:
+                string getSource() const {return source;} // if method is not const it can be changed and can't be used in the printRoute function
+                string getDestibation() const {return destination;} // if method is not const it can be changed and can't be used in the printRoute function
+                int getLength() const {return length;}  // if method is not const it can be changed and can't be used in the printRoute function
+                void setSource(const string& newSource){source = newSource;} 
+                void setDestination(const string& newDestination){destination = newDestination;}
+                void setLength(const int& newLength){length = newLength;}
+        };
+        void printRoute(const Route& route){ // reference is constant
+            cout << route.getSource() << " - " << route.getDestibation() << " : " << route.getLength() << endl;
+        }
+        int main(){
+            Route route;
+            route.setSource("Moscow");
+            route.setDestination("Berlin");
+            route.setLength(5400);
+            printRoute(route);
+            return 0;
+        }
+
+9. Constructor of the class
+    class Route{
+        public:
+        string source;
+        string destination;
+            Route(){
+                source = "Moscow";
+                destination = "St.Petersburg";
+            }
+    };
+    void printRoute(const Route& route){
+        cout << route.source << " - " << route.destination << endl;
+    }
+    int main(){
+        // calling by default
+        printRoute(Route());
+        // Or
+        printRoute({});
+    }
+
+10. Destructors:
+    #include <iostream>
+    #include <vector>
+    using namespace std;
+
+    class Route{
+        public:
+            string source;
+            string destination;
+            vector<string> totalRoutes;
+            Route(){
+                source = "Moscow";
+                destination = "St.Petersburg";
+            }
+            void setRoute(const string& newSource, const string& newDestination){
+                source = newSource;
+                destination = newDestination;
+                totalRoutes.push_back(source + " - " + destination);
+            }
+            ~Route(){
+                for(string s : totalRoutes){
+                    cout << s << endl;
+                }
+            }
+    };
+
+    int main(){
+        Route route;
+        route.setRoute("Moscow", "Berlin");
+        route.setRoute("Berlin", "Moscow");
+        route.setRoute("St.Petersburg", "Moscow");
+
+        return 0;
+    }
+
+11. Wrapper:
+    Example:
+        #include <iostream>
+        using namespace std;
+        struct Day{
+            int value;
+        };
+        struct Month{
+            int value;
+        };
+        struct Year{
+            int value;
+        };
+        struct Date{
+            int day;
+            int month;
+            int year;
+            Date(Day newDay, Month newMonth, Year newYear){
+                day = newDay.value;
+                month = newMonth.value;
+                year = newYear.value;
+            }
+            void printDate(){
+                cout << day << "/" << month << "/" << year << endl;
+            }
+        };
+        int main(){
+            // Date date = {{10},{10},{10}}; // first type of declaration
+            Date date = {Day{10},Month{10},Year{10}}; // second type of declaration
+            date.printDate();
+            return 0;
+        }
+
+12. Explicit (явное объявление):
+    #include <iostream>
+    using namespace std;
+    struct Day{
+        int value;
+        explicit Day(int newDay){
+            value = newDay;
+        }
+    };
+    struct Month{
+        int value;
+        explicit Month(int newMonth){
+            value = newMonth;
+        }
+    };
+    struct Year{
+        int value;
+        explicit Year(int newYear){
+            value = newYear;
+        }
+    };
+    struct Date{
+        int day;
+        int month;
+        int year;
+        Date(Day newDay, Month newMonth, Year newYear){
+            day = newDay.value;
+            month = newMonth.value;
+            year = newYear.value;
+        }
+        void printDate(){
+            cout << day << "/" << month << "/" << year << endl;
+        }
+    };
+    int main(){
+        // Now, this type of declaration is forbidden -------------------->
+        // Date date = {{10},{10},{10}}; 
+
+        // we should explicitly declare this type of declaration
+        Date date = {Day(10), Month(10), Year(10)};
+        date.printDate();
+        return 0;
+    }
+
+13. 
+
+[1]
+F:\c-plus-plus-modern-development\c-plus-plus-white\04_kata-po-vvodu-vyvodu-iskliuchieniiam-i-pierieghruzkie-opieratorov\03_vypolnieniie-opieratsii-iestiestviennym-obrazom

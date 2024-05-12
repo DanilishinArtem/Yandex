@@ -1,0 +1,54 @@
+#include <iostream>
+#include <string>
+#include <sstream>
+#include <iomanip>
+#include <exception>
+using namespace std;
+
+struct Date{
+    int day;
+    int month;
+    int year;
+    Date(int newDay, int newMonth, int newYear){
+        day = newDay;
+        month = newMonth;
+        year = newYear;
+    }
+};
+
+void EnsureNextSymbolAndSkip(istream& stream){
+    if(stream.peek() != '/'){
+        stringstream ss;
+        ss << "expected /, but got " << char(stream.peek());
+        throw runtime_error(ss.str());
+    }
+    stream.ignore(1);
+}
+
+istream& operator>>(istream& stream, Date& date){
+    stream >> date.year;
+    EnsureNextSymbolAndSkip(stream);
+    stream >> date.month;
+    EnsureNextSymbolAndSkip(stream);
+    stream >> date.day;
+    return stream;
+}
+
+ostream& operator<<(ostream& stream, const Date& date){
+    stream << setfill('0');
+    stream << setw(2) << date.day << "." << setw(2) << date.month << "." << setw(4) << date.year;
+    return stream;
+}
+
+int main(){
+    string date_ = "2017.01/25";
+    stringstream date_str(date_);
+    Date date = {0,0,0};
+    date_str >> date;
+    try{
+        cout << date << endl;
+    }catch (exception& ex){
+        cout << "Exception happened ..." << ex.what() << endl;
+    }
+    return 0;
+}

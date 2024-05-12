@@ -1,0 +1,63 @@
+1. Example of using:
+    #include <tuple>
+    tuple<int, string, bool> t(7, "c++", true);
+    // taking a second element of tuple:
+    cout << get<1>(t) << endl;
+    // standart of c++ let do like this:
+    tuple t(7, "c++", true);
+
+2. Special case of tuple is pair:
+    #include <utility>
+    pair<int, string> t(7, "c++");
+    cout << t.first << " " << t.second << endl;
+
+    Example of using map (remembering!!!):
+        int main(){
+            map<int, string> digits{{1, "one"}, {2, "two"}, {3, "three"}};
+            for(const auto& item : digits){
+                cout << item.first << " : " << item.second << endl;
+            }
+            return 0;
+        }
+    
+3. Returning a several values out of function:
+    #include <iostream>
+    #include <utility>
+    #include <set>
+    #include <map>
+    using namespace std;
+
+    class Cities{
+    public:
+        tuple<bool, string> FindCountry(string name) const {
+            if(city_to_country.count(name) == 1){
+                return {true, city_to_country.at(name)};
+            }else{
+                if(ambiguousCities.count(name) == 1){
+                    return {false, "Ambiguous"};
+                }else{
+                    return {false, "No information"};
+                }
+            }
+        }
+    private:
+        map<string, string> city_to_country;
+        set<string> ambiguousCities;
+    };
+
+    int main(){
+        Cities cities;
+        // variant I
+        // bool success;
+        // string message;
+        // tie(success, message) = cities.FindCountry("Moscow");
+        // cout << message << endl;
+        // variant II
+        // auto out = cities.FindCountry("Moscow");
+        // cout << get<1>(out) << endl;
+        // variant III (without declaration of success and message variables)
+        auto [success, message] = cities.FindCountry("Moscow");
+        cout << message << endl;
+        return 0;
+    }
+

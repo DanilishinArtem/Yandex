@@ -1,0 +1,57 @@
+1. Compare two Dates Example:
+    #include <vector>
+    #include <iostream>
+    using namespace std;
+
+    struct Date{
+        int year;
+        int month;
+        int day;
+    };
+
+    bool operator<(const Date& date1, const Date& date2){
+        return vector<int>{date1.year, date1.month, date1.day} < vector<int>{date2.year, date2.month, date2.day};
+    }
+
+    int main(){
+        Date date1 = {2017, 1, 25};
+        Date date2 = {2017, 6, 8};
+        cout << (date1 < date2) << endl;
+        return 0;
+    }
+
+2. Case: what if we have int, string, int
+    struct Date{
+        int year;
+        string month;
+        int day;
+    };
+    we can use tuple (tie):
+
+Solution:
+    // here is lsKey and rsKey has type of tuple<const int&, const string&, const int&> !!!
+    #include <vector>
+    #include <iostream>
+    #include <tuple>
+    using namespace std;
+
+    struct Date{
+        int year;
+        string month;
+        int day;
+    };
+
+    bool operator<(const Date& date1, const Date& date2){
+        tuple<const int&, const string&, const int&> lsKey = tie(date1.year, date1.month, date1.day);
+        auto rsKey = tie(date2.year, date2.month, date2.day);
+        return lsKey < rsKey;
+    }
+
+    int main(){
+        Date date1 = {2017, "june", 25};
+        Date date2 = {2017, "january", 8};
+        cout << (date1 < date2) << endl;
+        return 0;
+    }
+
+    

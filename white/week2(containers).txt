@@ -1,0 +1,171 @@
+1. Functions:
+    #include <iostream>
+    using namespace std;
+
+    Example: (passing of the parameters to the function as a value)
+    void ChangeInt(int x){
+        x = 42; // x is a copy of original x (calling a function ChangeInt doesn't change original value of the x)
+    }
+    int main(){
+        int a = 5; 
+        ChangeInt(a);
+        cout << a << endl;
+        return 0;
+    }
+
+    Example: (passing of the parameters to the function as a regerence)
+    void ChamgeInt(int* x){
+        *x = 42; // x is a reference, so i did a dereferencing a variable and it changed value that existing at the regerence
+    }
+    int main(){
+        int a = 5;
+        ChangeInt(&a);
+        cout << a << endl;
+        return 0;
+    }
+
+    Example: (passing parameters by reference)
+    void ChangeInt(int& x){
+        x = 42;
+    }
+    int main(){
+        int a = 5;
+        ChamgeInt(a);
+        cout << a << endl;
+        return 0;
+    }
+
+2. Time measire:
+    #include <iostream>
+    #include <chrono>
+    using namespace std;
+    using namespace std::chrono;
+
+    int main(){
+        auto start = steady_clock::now();
+        // calling some function ...
+        auto finish = steady_clock::now();
+        cout << "time of rucntion work = " << duration_cast<milliseconds>(finiah - start).count() << " ms." << endl;
+        # cout << "time of function work = " << (finish - start) << " ms. << endl; // regular method
+        return 0;
+    }
+
+3. Case about constant reference:
+suppose i have a problem, need to count a number of elements in the vector through function
+    #include <iostream>
+    using namespace std;
+
+    vector<Person> getMoscowPopulation(); // some function
+
+    // type I (with a deep copy of parameter population)
+    void PrintPopulationSize(vector<Person> population){
+        cout << "Size of Moscow population = " << population.size() << " peoples" << endl;
+    }
+
+    // type II (without a deep copy of parameter population (by reference))\
+    // Here is a problem (parameter in the function can be changed)!!!
+    void PrintPopulationSize(vector<Person>& population){
+        cout << "Size of Moscow population = " << population.size() << "peoples" << endl;
+    }
+
+    // type III (without a deep cope and without possibility of changing input parameter of the fucntion)
+    // const reference !!!
+    void PrintPopulationSize(const vector<Person>& population){
+        cout << "Size of Moscow population = " << population.size() << "peoples" << endl;
+    }
+    // Attention! (passing a parameter by const reference can be used through another function) --->
+    PrintPopulationSize(getMoscowPopulation()); // it cat be done!!!
+
+4. Vector container:
+    #declaration of the vector:
+    int n;
+    cin >> n;
+    vector<string> v(n); # declare vector with a defined size of vector
+    vector<bool> v(28, false); # create and fill vector by values by default values
+    v.resize(30) // change a size of vector value
+    v.assign(30, false) // reassign shape and default values in the vector v
+    v.clear() // clear vector
+
+    Example:
+        #include <iostream>
+        #include <vector>
+        #include <string>
+        using namespace std;
+
+        void printVector(const vector<string>& v){
+            cout << "Here is your vector: " << endl;
+            for(string s : v){
+                cout << s << endl;
+            }
+        }
+        int main(){
+            int n;
+            cout << "Enter the number of elements:" << endl;
+            cin >> n;
+            vector<string> v(n);
+            for(string &s : v){
+                cin >> s;
+            }
+            printVector(v);
+            return 0;
+        }
+
+5. Map container (it contains SORTED keys and their values):
+    Example of using:
+        #include <iostream>
+        #include <map>
+        #include <string>
+        using namespace std;
+
+        void printMap(const map<int, string>& input){
+            int i = 0;
+            for(auto item : input){
+                cout << "[" << i << "] ";
+                cout << item.second << " : ";
+                cout << item.first << endl;
+                i++;
+            }
+        }
+        int main(){
+            map<int, string> events;
+            events[1950] = "Bjarne Stroustrup's b-day";
+            events[1941] = "Dennis Ritchie's b-day";
+            printMap(events);
+            return 0;
+        }
+    # Delete one of the elements of the map:
+        evensts.erase(1941); # write a value of deleting pair
+    # Attention (if the pair key and value doesn't exist in the map, it will be created automatically by compiler)
+
+    # Feature of the g++ 17:
+    for(const auto& [key, value] : m){
+        cout << key << " : " << value << endl; 
+    }
+
+6. Set container: # Ordered set of elements (and it contains unique elements)
+    #include <iostream>
+    #include <set>
+    using namespace std;
+    void printSet(const set<string>& s){
+        for(auto item : s){
+            cout << item << endl;
+        }
+    }
+    int main(){
+        set<string> famous_peoples;
+        famous_peoples.insert("Artem");
+        famous_peoples.insert("Danilishin");
+        famous_peoples.insert("Artem");
+        printMap(famous_peoples); // it will print only "Artem" and "Danilishin" because it containts only unique elements!!!
+    }
+    # delete elemts out of set
+    famous_peoples.erase("Danlishin");
+    # find out size of the set
+    cout << "size of the famous_peoples: " << famous_peoples.size() << endl;
+    # find elemet in the set
+    famous_peoples.count("Artem");
+    # creating set by vector
+    vector<string> v = {"a", "c", "b"};
+    set<string> s(begin(v), end(v));
+    printSet(s);
+

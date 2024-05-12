@@ -1,0 +1,76 @@
+1. Problem:
+    #include <vector>
+    #include <iostream>
+    using namespace std;
+
+    int main(){
+        vector<int> t1 = {7, 8, 3};
+        vector<int> t2 = {-7, -7, 3};
+        int avr1 = 0;
+        int avr2 = 0;
+        for(int x : t1){
+            avr1 += x;
+        }
+        for(int x : t2){
+            avr2 += x;
+        }
+        avr1 /= t1.size();
+        avr2 /= t2.size();
+        // it's ok, all works right 
+        cout << "average value of t1 = " << avr1 << endl;
+        // it's not ok, because t2 has type int but t2.size() is not int
+        cout << "average value of t2 = " << avr2 << endl;
+        return 0; 
+    }
+
+So, as a result, we have a different types of values:
+1. standart types of datas:
+    1. int (range is 4 bytes (-2^32):(2^32-1))
+    2. unsigned int (range is (0):(2^32-1))
+    3. size_t (unsigned type, range is 4 bytes or 8 bytes)
+2. from #include <cstdint>
+    1. int32_t (range is 4 bytes)
+    2. uint32_t (unsigned, range is 4 bytes)
+    3. int8_t, uint8_t (8 bit)
+    3. int16_t, uint16_t (16 bit)
+    3. int64_t, uint64_t (64 bit)
+!. How to find out size of type:
+    cout << sizeof(int64_t) << endl;
+!. Hoe to find out limits of types:
+    #include <limits>
+    cout << numeric_limits<int>::min() << endl;
+!. if we have signed and unsigned typed of datas -> we'll get unsigned type, as signed typed will be transferred to unsigned type
+    Example:
+        int main(){
+            int x = -1;
+            unsigned y = 1;
+            cout << (x < y) << endl;
+            return 0;
+        }
+        // we will get false as int x -> unsigned x
+3. Type conversions:
+    vector<int> vec = {1,2,3};
+    static_cast<int>(vec.size())
+
+4. Example:
+    int main(){
+        vector<int> v1 = {1,2,3};
+        vector<int> v2 = {};
+        // it will be work correct
+        for(size_t i = 0; i < v1.size() - 1; i++){
+            cout << v1[i] << endl;
+        }
+        // it will not work correct
+        for(size_t i = 0; i < v2.size() - 1; i++){
+            cout << v2[i] << endl;
+        }
+        // but it will work correct in both cases
+        for(size_t i = 0; i + 1 < v1.size(); i++){
+            cout << v2[i] << endl;
+        }
+        for(size_t i = 0; i + 1 < v2.size(); i++){
+            cout << v2[i] << endl;
+        }
+        return 0;
+    }
+

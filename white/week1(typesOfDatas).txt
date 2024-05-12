@@ -1,0 +1,81 @@
+1. Types of datas in c++:
+    * int
+    * bool
+    * double
+    * float
+    * char
+    * string -> #include <string>
+    * vector -> #include <vector> -> vector<int> name = {1,2,3};
+    * map -> #include <map> -> map<string, int> name_to_value;
+                               map_to_value["one"] = 1;
+                               map_to_value["two"] = 2;
+    
+    * const type(int, bool, double, float, char)  // unchangable type of variable
+    other type of initialization:
+        map<string, int> name = {{"one", 1},{"two", 2}, {"three", 3}};
+    * user defined types of datas -> Struct:
+    example:
+    struct Person {
+        string name;
+        string surname;
+        int age;
+    }
+    Calling:
+    vector<Person> staff;
+    staff.push_back({"Ivan", "Ivanov", 25});
+    staff.push_back({"Petr", "Artemonov", 32});
+
+2. Realizations types of datas:
+    Example:
+        #include <iostream>
+        #include <string>
+        using namespace std;
+
+        int main(){
+            stirng name = "abcdef";
+            for(auto s : name){
+                cout << s << ",";
+            }
+            cout << "\n";
+            return 0;
+        }
+
+3. Algorithms library:
+    * Example (count a quantity of exact elements in the vector (example (5))):
+    1 way:
+        vector<int> numbers = {1,4,3,5,3,5,6};
+        int quantity = 0;
+        for(auto number : numbers){
+            if(number == 5){
+                quantity ++;
+            }
+        }
+
+    2 way:
+        int quantity = count(begin(numbers), end(numbers), 5);
+
+    * sorting example:
+        sort(begin(numbers), end(numbers));
+
+4. Input and output:
+    #include <iostream>
+    using namespace std;
+    int main(){
+        int x, y;
+        cin >> x >> y;
+        cout << (x + y) << "\n";
+    }
+
+5. Deep copying:
+    #include <iostream>
+    #include <string>
+    using namespace std;
+    int main(){
+        string s = "hello";
+        string t = s; // whole string s copying to the variable t !!!
+        t += ", world";
+        cout << s << "\n";
+        cout << t << "\n";
+    }
+
+    
