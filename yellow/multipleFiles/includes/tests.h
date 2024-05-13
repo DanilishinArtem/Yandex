@@ -1,28 +1,10 @@
-#include <iostream>
+
 #include <map>
-#include <string>
 #include <set>
-#include <cassert>
-#include <exception>
-#include <sstream>
-include <testFramework.h>
-using namespace std;
+#include <string>
+#include "synonims.h"
+#include "testFramework.h"
 
-using Synonims = map<string, set<string>>; 
-
-void AddSynonims(Synonims& synonims, const string& first_word, const string& second_word){
-    synonims[second_word].insert(first_word);
-    // synonims[first_word].insert(first_word); // that is not right
-    synonims[first_word].insert(second_word); // that is right
-}
-
-int GetSynonimCount(Synonims& synonims, const string& word){
-    return synonims[word].size();
-}
-
-bool CheckSynonim(Synonims& synonims, const string& first_word, const string& second_word){
-    return synonims[first_word].count(second_word) == 1;
-}
 
 void TestAddSynonims(){
     {
@@ -91,10 +73,4 @@ void TestProgramm(){
     tr.RunTest(TestAddSynonims, "TestAddSynonims");
     tr.RunTest(TestSynonimsCount, "TestAddSynonims");
     tr.RunTest(TestCheckSynonim, "TestAddSynonims");
-}
-
-int main(){
-    TestProgramm();
-    cout << "Programm is running" << endl;
-    return 0;
 }

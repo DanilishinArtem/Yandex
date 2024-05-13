@@ -19,5 +19,3 @@
     calling function:
         AssertEqual(GetSynonimCount(synonims, "a"), 2, "count for a (str: 70)");
 
-F:\c-plus-plus-modern-development\c-plus-plus-yellow\02_tiestirovaniie-i-otladka\02_razrabotka-frieimvorka-iunit-tiestov-nachalo
-[3]
