@@ -2,5 +2,5 @@ Show preprocessed file:
     g++ -R main.cpp
 
 
-F:\c-plus-plus-modern-development\c-plus-plus-yellow\03_raspriedielieniie-koda-po-failam\01_zagholovochnyie-faily
+F:\c-plus-plus-modern-development\c-plus-plus-yellow\03_raspriedielieniie-koda-po-failam\02_mnoghofailovyie-proiekty
 [3]

@@ -5,6 +5,7 @@
         "stdexcept": "cpp",
         "ostream": "cpp",
         "string": "cpp",
-        "sstream": "cpp"
+        "sstream": "cpp",
+        "algorithm": "cpp"
     }
 }

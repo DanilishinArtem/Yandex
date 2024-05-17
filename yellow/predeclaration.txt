@@ -1,0 +1,55 @@
+# This example with an error (function bar is calling before declaration)
+    #include <iostream>
+    using namespace std;
+
+    void foo(){
+        bar();
+    }
+
+    void bar(){
+    }
+
+    int main(){
+        return 0;
+    }
+
+# Solution (predeclare the function bar):
+    #include <iostream>
+    using namespace std;
+
+    void bar();
+
+    void foo(){
+        bar();
+    }
+
+    void bar(){
+    }
+
+    int main(){
+        return 0;
+    }
+
+# Example of declaration and definition of the class:
+    # Declaration:
+        class Rectangle {
+        public:
+            Rectangle(int width, int height);
+            int Area() const;
+            int Perimeter() const;
+        private:
+            int width, height;
+        };
+
+    # Definition:
+        Rectangle::Rectangle(int w, int h){
+            width = w;
+            height = h;
+        }
+        int Rectangle::Area() const {
+            return width * height;
+        }
+        int Perimeter::Area() const {
+            return 2 * (width + height);
+        }
+

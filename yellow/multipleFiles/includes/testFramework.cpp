@@ -1,36 +1,4 @@
-
-#include <iostream>
-#include <map>
-#include <string>
-#include <set>
-#include <cassert>
-#include <exception>
-#include <sstream>
-using namespace std;
-
-using Synonims = map<string, set<string>>; 
-
-void SetColor(int color);
-
-template <typename K>
-ostream&  operator << (ostream& os, const set<K>& s);
-
-template <typename K, typename V>
-ostream& operator << (ostream& os, const map<K, V>& m);
-
-template<typename T, typename U>
-void AssertEqual(const T& t, const U& u, const string& hint);
-
-class TestRunner{
-public:
-    template<typename Func>
-    void RunTest(Func func, const string& nameOfFunction);
-    ~TestRunner();
-private:
-    int fail_counter = 0;
-};
-
-
+// #include "testFramework.h"
 
 
 void SetColor(int color){

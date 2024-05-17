@@ -1,0 +1,48 @@
+1. Example of using find_if (for string):
+    #include <iostream>
+    #include <algorithm>
+    #include <vector>
+
+    using namespace std;
+
+    int main(){
+        vector<string> vi = {"python", "C++", "C", "Java", "C#"};
+        auto result = find_if(begin(vi), end(vi), [](const string& vi){return vi[0] == 'C';});
+        string& ref = *result;
+        cout << "Through ref: " << ref << endl;
+        cout << "Through result: " << *result << endl;    
+        return 0;
+    }
+
+2. Exmaple of using find_if (for struct)
+    #include <iostream>
+    #include <algorithm>
+    #include <vector>
+
+    using namespace std;
+
+    struct Lang{
+        string name;
+        int age;
+    };
+
+    int main(){
+        vector<Lang> vi = {{"python", 26}, 
+        {"C++", 34}, 
+        {"C", 45}, 
+        {"Java", 22}, 
+        {"C#", 17}};
+        auto result = find_if(begin(vi), end(vi), [](const Lang& vi){return vi.name[0] == 'C';});
+        if(result == end(vi)){
+            cout << "Not found" << endl;
+        }else{
+            // first variant:
+            cout << (*result).age << endl;
+            // second variant: 
+            cout << result->age << endl;
+        }
+        cout << begin(vi)->name << " , " << begin(vi)->age << endl; // display begin of container
+        cout << end(vi)->name << " , " << end(vi)->age << endl; // segmentation fault (not an end of container)
+        return 0;
+    }
+

@@ -5,16 +5,8 @@ using namespace std;
 
 using Synonims = map<string, set<string>>; 
 
-void AddSynonims(Synonims& synonims, const string& first_word, const string& second_word){
-    synonims[second_word].insert(first_word);
-    // synonims[first_word].insert(first_word); // that is not right
-    synonims[first_word].insert(second_word); // that is right
-}
+void AddSynonims(Synonims& synonims, const string& first_word, const string& second_word);
 
-int GetSynonimCount(Synonims& synonims, const string& word){
-    return synonims[word].size();
-}
+int GetSynonimCount(Synonims& synonims, const string& word);
 
-bool CheckSynonim(Synonims& synonims, const string& first_word, const string& second_word){
-    return synonims[first_word].count(second_word) == 1;
-}
+bool CheckSynonim(Synonims& synonims, const string& first_word, const string& second_word);
