@@ -1,0 +1,43 @@
+Remark about deque:
+    vector store all elements one by one and erasing (for exapmle) first element uneffective, 
+    because we erase first element and move all other elements to the left:
+    So, we should use deque (double ended queue):
+    #include <deque>
+    d.push_back(x); // adding in back
+    d.pop_back(x); // getting from back
+    d.push_front(x); // adding in begin
+    d.pop_front(); // erasing from begin
+    d[i]; // accessing by index
+
+        Example 1:
+            #include<deque>
+            int main(){
+                int n;
+                cin >> n;
+                vector<int> v(n);
+                while(!v.empty()){
+                    v.erase(begin(v));
+                }
+                cout << "Empty vector size: " << n << endl;
+
+                deque<int> v_deque(n);
+                while(!v_deque.empty()){
+                    v_deque.erase(begin(v_deque));
+                }
+                cout << "Empty deque size: " << n << endl;
+                return 0;
+            }
+
+Remark about queue (if all we need a queue we should use queue container):
+    operation of queue:
+        #include <queue>
+        q.push(x), q.pop()
+        q.front(), q.back()
+        q.size(), q.empty()
+
+Remark about stack (allows to add and pop to the end):
+    operation of stack:
+        #include <stack>
+        st.push(x), st.pop()
+        st.top()
+        st.size(), st.empty()

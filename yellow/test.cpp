@@ -1,6 +1,8 @@
 #include <iostream>
 #include <algorithm>
 #include <map>
+#include <set>
+#include <deque>
 
 using namespace std;
 
@@ -18,20 +20,21 @@ void printRange(T begin, T end){
 }
 
 int main(){
-    map<string, int> langs = {
-        {"python", 26},
-        {"C++", 34},
-        {"C", 45},
-        {"Java", 22},
-        {"C#", 17}
-    };
+    int n;
+    cin >> n;
+    vector<int> v(n);
+    while(!v.empty()){
+        v.erase(begin(v));
+    }
+    cout << "Empty vector size: " << n << endl;
 
-    auto it = langs.find("C++");
-    printRange(langs.begin(), it);
-    printRange(it, langs.end());
+    deque<int> v_deque(n);
+    while(!v_deque.empty()){
+        v_deque.erase(begin(v_deque));
+    }
+    cout << "Empty deque size: " << n << endl;
     return 0;
 }
 
-
-// F:\c-plus-plus-modern-development\c-plus-plus-yellow\04_itieratory-alghoritmy-i-kontieiniery\02_ispol-zovaniie-itieratorov-v-alghoritmakh-i-kontieinierakh
-// [1]
+// F:\c-plus-plus-modern-development\c-plus-plus-yellow\04_itieratory-alghoritmy-i-kontieiniery\03_ochieried-diek-i-alghoritmy-poiska
+// [2]

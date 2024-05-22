@@ -6,6 +6,7 @@
         "ostream": "cpp",
         "string": "cpp",
         "sstream": "cpp",
-        "algorithm": "cpp"
+        "algorithm": "cpp",
+        "map": "cpp"
     }
 }

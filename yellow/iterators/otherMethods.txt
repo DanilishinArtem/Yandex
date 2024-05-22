@@ -1,0 +1,154 @@
+Examle (erase, insert methods):
+    #include <iostream>
+    #include <algorithm>
+    #include <map>
+
+    using namespace std;
+
+    ostream&  operator << (ostream& os, const pair<string, int>& s){
+        cout << s.first << " " << s.second;
+        return os;
+    }
+
+    template <typename T>
+    void printRange(T begin, T end){
+        for(auto item = begin; item != end; item++){
+            cout << *item << " ";
+        }
+        cout << endl;
+    }
+
+    int main(){
+        vector<string> vi = {"python", "C++", "C", "Java", "C#"};
+        auto it = find(begin(vi), end(vi), "C++");
+        cout << "vector before erase: " << endl;
+        printRange(begin(vi), end(vi));
+        vi.erase(it);
+        cout << "vector after erase: " << endl;
+        printRange(begin(vi), end(vi));
+        vi = {"python", "C++", "C", "Java", "C#"};
+        cout << "vector after erase all past the C++: " << endl;
+        vi.erase(it, end(vi));
+        printRange(begin(vi), end(vi));
+        // method INSERT inserts element right before iterator --->
+        vi.insert(begin(vi), "C++");
+        cout << "vector after insert: " << endl;
+        printRange(begin(vi), end(vi));
+        // we can pass range of elements that we want to insert --->
+        return 0;
+    }
+
+Example 2 (methods: remove_if, min_element, all_of):
+    int main(){
+        vector<string> vi = {"Python", "C++", "C", "Java", "C#"};
+        // problem that this type of removing doesn't remove all elements with starting char 'C'
+        // that's because method doesn't refer to the original container
+        remove_if(begin(vi), end(vi), [](const string& item){return item[0] == 'C';});
+        printRange(begin(vi), end(vi));
+        // we should use erase method to remove all elements with starting char 'C'
+        auto it = remove_if(begin(vi), end(vi), [](const string& item){return item[0] == 'C';});
+        vi.erase(it, end(vi));
+        printRange(begin(vi), end(vi));
+        // show min element:
+        vi = {"python", "C++", "C", "Java", "C#"};
+        auto min = min_element(begin(vi), end(vi));
+        cout << *min << endl;
+        // check condition for all elements:
+        vi = {"Python", "C++", "C", "Java", "C#"};
+        cout << all_of(begin(vi), end(vi), [](const string& item){return item[0] >= 'A' && item[0] <= 'Z';}) << endl;
+        return 0;
+    }
+
+Example 3 (rbegin, rend) ---> reversed iterator:
+    int main(){
+        vector<string> vi = {"Python", "C++", "C", "Java", "C#"};
+        // print straight range
+        printRange(begin(vi), end(vi));
+        // print reverse range
+        printRange(rbegin(vi), rend(vi));
+        return 0;
+    }
+
+Example 4 (example of using reverse iterator):
+    int main(){
+        vector<string> vi = {"Python", "C++", "C", "Java", "C#"};
+        // print straight range
+        // type of begin(vi): vector<string>::iterator
+        printRange(begin(vi), end(vi));
+        // print reverse range
+        // type of rbegin(vi): vector<string>::reverse_iterator
+        printRange(rbegin(vi), rend(vi));
+        // reverse type of find_if algorithm:
+        auto it = find_if(rbegin(vi), rend(vi), [](const string& item){return item[0] == 'C';});
+        cout << *it << endl;
+        return 0;
+    }
+
+Example 5 (using partition method):
+    int main(){
+        vector<string> vi = {"Python", "C++", "C", "Java", "C#"};
+        // print straight range
+        // type of begin(vi): vector<string>::iterator
+        printRange(begin(vi), end(vi));
+        // print reverse range
+        // type of rbegin(vi): vector<string>::reverse_iterator
+        printRange(rbegin(vi), rend(vi));
+        // reverse type of find_if algorithm:
+        auto it = find_if(rbegin(vi), rend(vi), [](const string& item){return item[0] == 'C';});
+        cout << *it << endl;
+        // partition method:
+        auto part = partition(begin(vi), end(vi), [](const string& item){return item[0] == 'C';});
+        printRange(begin(vi), part);
+        // copy if method:
+        vector<string> c_langs(vi.size());
+        auto end_c = copy_if(begin(vi), end(vi), begin(c_langs), [](const string& item){return item[0] == 'C';});
+        // here is c_lang also has size of vi
+        printRange(begin(c_langs), end(c_langs));
+        // so we can use return of copy_if as end of c_langs
+        printRange(begin(c_langs), end_c);
+        return 0;
+    }
+
+Example 6 (algorithm with sets):
+    int main(){
+        set<int> a = {1, 2, 3, 4, 5};
+        set<int> b = {3, 4, 5, 6, 7};
+        vector<int> result(a.size());
+
+        auto it = set_intersection(begin(a), end(a), begin(b), end(b), begin(result));
+        printRange(begin(result), it);
+        return 0;
+    }
+
+Example 7 (filling example of vectors and sets):
+    int main(){
+        // using back_inserter for vector
+        vector<string> vi = {"Python", "C++", "C", "Java", "C#"};
+        vector<string> c_langs;
+        copy_if(begin(vi), end(vi), back_inserter(c_langs), [](const string& item){return item[0] == 'C';});
+        printRange(begin(c_langs), end(c_langs));
+        // using inserter for set
+        set<int> a = {1, 2, 3, 4, 5};
+        set<int> b = {3, 4, 5, 6, 7};
+        set<int> c;
+        set_intersection(begin(a), end(a), begin(b), end(b), inserter(c, begin(c)));
+        printRange(begin(c), end(c));
+        return 0;
+    }
+
+Example 8 (sizes of sets and vectors by reference):
+    int main(){
+        vector<string> vi = {"python", "C++", "C", "Java", "C#"};
+        auto it = find_if(begin(vi), end(vi), [](const string& item){return item[0] == 'C';});
+        // show the size:
+        cout << it - begin(vi) << endl;
+        set<int> a = {1, 2, 3, 4, 5};
+        // it's forbidden for set (because it doesn't have order):
+        // cout << end(a) - begin(a) << endl;
+        auto it2 = find_if(begin(a), end(a), [](const int& item){return item == 3;});
+        printRange(next(it2), end(a));    
+        return 0;
+    }
+
+Example 9 (documentation about algorithms):
+    http://ru.cppreference.com
