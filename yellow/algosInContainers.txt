@@ -1,0 +1,20 @@
+1. for vector:
+    // checking of existence
+    binary_search(begin(v), end(v), x);
+
+    // the first element more a equal then x
+    lower_bound(begin(v), end(v), x);
+
+    // the first element more then x
+    upper_bound(begin(v), end(v), v);
+
+    // range of elements, equal to the x
+    equal_range(begin(v), end(v), x) == make_pair(lower_bound(...), upper_bound(...))
+
+2. Searching in set:
+    s.count(x);
+    s.find(x);
+    s.lower_bound(x);
+    s.lower_bound(x);
+    s.upper_bound(x);
+    s.equal_range(x);

@@ -1,40 +1,68 @@
 #include <iostream>
-#include <algorithm>
-#include <map>
-#include <set>
-#include <deque>
+#include <string>
 
 using namespace std;
 
-ostream&  operator << (ostream& os, const pair<string, int>& s){
-    cout << s.first << " " << s.second;
-    return os;
-}
+struct Fruit{
+    int health = 0;
+    string type = "fruit";
+};
 
-template <typename T>
-void printRange(T begin, T end){
-    for(auto item = begin; item != end; item++){
-        cout << *item << " ";
+struct Apple: public Fruit{
+    Apple(){
+        health = 10;
+        type = "apple";
     }
-    cout << endl;
+};
+
+struct Orange: public Fruit{
+    Orange(){
+        health = 5;
+        type = "orange";
+    }
+};
+
+class Animal{
+public:
+    string type = "animal";
+
+    void eat(const Fruit& fruit){
+        cout << type << " eats " << fruit.type << ". " << fruit.health << " health left" << endl;
+    }
+};
+
+class Cat: public Animal{
+public:
+    Cat(){
+        type = "cat";
+    }
+    void meow(){
+        cout << "meow" << endl;
+    }
+};
+
+class Dog: public Animal{
+public:
+    Dog(){
+        type = "dog";
+    }
+};
+
+void DoMeal(Animal& animal, const Fruit& fruit){
+    animal.eat(fruit);
 }
 
 int main(){
-    int n;
-    cin >> n;
-    vector<int> v(n);
-    while(!v.empty()){
-        v.erase(begin(v));
-    }
-    cout << "Empty vector size: " << n << endl;
-
-    deque<int> v_deque(n);
-    while(!v_deque.empty()){
-        v_deque.erase(begin(v_deque));
-    }
-    cout << "Empty deque size: " << n << endl;
+    Apple apple;
+    Orange orange;
+    Cat cat;
+    Dog dog;
+    cat.meow();
+    DoMeal(cat, apple);
+    DoMeal(dog, orange);
     return 0;
 }
 
-// F:\c-plus-plus-modern-development\c-plus-plus-yellow\04_itieratory-alghoritmy-i-kontieiniery\03_ochieried-diek-i-alghoritmy-poiska
+
+// F:\c-plus-plus-modern-development\c-plus-plus-yellow\05_nasliedovaniie-i-polimorfizm\01_nasliedovaniie
 // [2]

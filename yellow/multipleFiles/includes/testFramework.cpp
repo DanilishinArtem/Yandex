@@ -1,4 +1,4 @@
-// #include "testFramework.h"
+#include "testFramework.h"
 
 
 void SetColor(int color){

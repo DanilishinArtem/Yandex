@@ -1,0 +1,117 @@
+1. Observing of the problem (doubling of the code):
+    #include <iostream>
+    #include <string>
+
+    using namespace std;
+
+    struct Apple{
+        int health = 10;
+    };
+
+    struct Orange{
+        int health = 5;
+    };
+
+    class Cat{
+    public:
+        void meow(){
+            cout << "meow" << endl;
+        }
+        void eat(const Apple& apple){
+            cout << "Cat eats apple. " << apple.health << " health left" << endl;
+        }
+        void eat(const Orange& orange){
+            cout << "Cat eats orange. " << orange.health << " health left" << endl;
+        }
+    };
+
+    class Dog{
+    public:
+        void eat(const Apple& apple){
+            cout << "Dog eats apple. " << apple.health << " health left" << endl;
+        }
+        void eat(const Orange& orange){
+            cout << "Dog eats orange. " << orange.health << " health left" << endl;
+        }
+    };
+
+    int main(){
+        Apple apple;
+        Orange orange;
+        Cat cat;
+        Dog dog;
+        cat.meow();
+        cat.eat(apple);
+        cat.eat(orange);
+
+        dog.eat(apple);
+        dog.eat(orange);
+        return 0;
+    }
+
+2. Refactoring of the code (by using nasledovanie):
+
+    #include <iostream>
+    #include <string>
+
+    using namespace std;
+
+    struct Fruit{
+        int health = 0;
+        string type = "fruit";
+    };
+
+    struct Apple: public Fruit{
+        Apple(){
+            health = 10;
+            type = "apple";
+        }
+    };
+
+    struct Orange: public Fruit{
+        Orange(){
+            health = 5;
+            type = "orange";
+        }
+    };
+
+    class Animal{
+    public:
+        string type = "animal";
+
+        void eat(const Fruit& fruit){
+            cout << type << " eats " << fruit.type << ". " << fruit.health << " health left" << endl;
+        }
+    };
+
+    class Cat: public Animal{
+    public:
+        Cat(){
+            type = "cat";
+        }
+        void meow(){
+            cout << "meow" << endl;
+        }
+    };
+
+    class Dog: public Animal{
+    public:
+        Dog(){
+            type = "dog";
+        }
+    };
+
+    void DoMeal(Animal& animal, const Fruit& fruit){
+        animal.eat(fruit);
+    }
+
+    int main(){
+        Apple apple;
+        Orange orange;
+        Cat cat;
+        Dog dog;
+        cat.meow();
+        DoMeal(cat, apple);
+        DoMeal(dog, orange);
+        return 0;
+    }
