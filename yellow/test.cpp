@@ -1,68 +1,68 @@
 #include <iostream>
-#include <string>
+#include <vector>
 
 using namespace std;
 
-struct Fruit{
-    int health = 0;
-    string type = "fruit";
-};
-
-struct Apple: public Fruit{
-    Apple(){
-        health = 10;
-        type = "apple";
-    }
-};
-
-struct Orange: public Fruit{
-    Orange(){
-        health = 5;
-        type = "orange";
-    }
-};
-
 class Animal{
 public:
-    string type = "animal";
-
-    void eat(const Fruit& fruit){
-        cout << type << " eats " << fruit.type << ". " << fruit.health << " health left" << endl;
+    Animal(const string& type) : type_(type){}
+    void Eat(const string& fruit){
+        cout << type_ << " eats " << fruit << endl;
     }
+    // void Voice() const {}; // this kind of solution doesn't work
+    virtual void Voice() const {}; // if we use virtual function, it works
+    // То есть здесь мы говорим компилятору, что у классов потомков может быть своя реализация метода "Voice"
+
+private:
+    const string type_;
 };
 
-class Cat: public Animal{
+class Cat: public Animal {
 public:
-    Cat(){
-        type = "cat";
+    Cat() : Animal("cat"){}
+    void Meow() const {
+        cout << "meow" << endl;
     }
-    void meow(){
+    // if we change name of method "Voice" to "Sound", it doesn't work because method should override something but it doesn't 
+    void Voice() const override{
         cout << "meow" << endl;
     }
 };
 
-class Dog: public Animal{
+class Dog: public Animal {
 public:
-    Dog(){
-        type = "dog";
+    Dog() : Animal("dog"){}
+    void Voice() const override{
+        cout << "whaf" << endl;
     }
 };
 
-void DoMeal(Animal& animal, const Fruit& fruit){
-    animal.eat(fruit);
+class Parrot: public Animal {
+public:
+    Parrot(const string& name) : Animal("Parrot"), name_(name){}
+    void Voice() const override{
+        cout << "Parrot " << name_ << " is good" << endl;
+    }
+private:
+    const string name_;
+};
+
+void MakeASound(const Animal& animal){
+    animal.Voice();
 }
 
 int main(){
-    Apple apple;
-    Orange orange;
     Cat cat;
     Dog dog;
-    cat.meow();
-    DoMeal(cat, apple);
-    DoMeal(dog, orange);
+    Parrot parrot("Tom");
+
+    MakeASound(cat);
+    MakeASound(dog);
+    MakeASound(parrot);
     return 0;
-}
+} 
 
 
-// F:\c-plus-plus-modern-development\c-plus-plus-yellow\05_nasliedovaniie-i-polimorfizm\01_nasliedovaniie
-// [2]
+
+// F:\c-plus-plus-modern-development\c-plus-plus-yellow\05_nasliedovaniie-i-polimorfizm\02_polimorfizm
+// 

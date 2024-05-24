@@ -1,0 +1,73 @@
+# Example (problem of unexpected modification):
+# Solution 1 (by "protected"):
+    class Animal{
+    public:
+        void eat(const Fruit& fruit){
+            cout << type << " eats " << fruit.type << ". " << fruit.health << " health left" << endl;
+        }
+    protected: // variable "type" can't be modify outside the class (have access only naslednik of this class)
+        string type = "animal";
+    };
+
+# Solution 2 (by "const" type):
+    class Animal{
+    public:
+        Animal(const string& t = "animal") : type(t){
+        } 
+        void eat(){
+            cout << type << " eats " << endl;
+        }
+        const string type = "animal";
+    };
+
+    class Cat: public Animal{
+    public:
+        Cat() : Animal("cat"){
+        }
+        void meow(){
+            cout << "meow" << endl;
+        }
+    };
+
+# List of initialization:
+    MyClass(int v1, int v2) : Var1(v1), Var2(v2) {
+        // ...
+    }
+
+# Order of creating and deleting classed:
+    struct Log{
+        Log(string name) : n(name) {
+            cout << "+ " << n << endl;
+        } 
+        ~Log(){
+            cout << "- " << n << endl;
+        }
+        string n;
+    };
+
+    struct Fruit{
+        Fruit(const string& t) : l(t + " (Fruit)"){
+        }
+        const Log l; 
+    };
+
+    struct Apple: public Fruit{
+        Apple(const string& t) : Fruit(t), l(t) {
+        }
+        const Log l;
+    };
+
+    class AppleTree{
+    public:
+        AppleTree() : a1("apple1"), a2("apple2"), l("AppleTree") {
+        }
+        const Log l;    
+        // this part defines order of initialization
+        Apple a1;
+        Apple a2;
+    };
+
+    int main(){
+        AppleTree tree;
+        return 0;
+    }
