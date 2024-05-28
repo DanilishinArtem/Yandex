@@ -1,0 +1,46 @@
+# Example 1 (we should have realization of the methos Voice for all childs, bacause the method is virtual and class Animal as a result is also is virtual)
+    class Animal{
+    public:
+        Animal(const string& type) : type_(type){}
+        void Eat(const string& fruit){
+            cout << type_ << " eats " << fruit << endl;
+        }
+        // void Voice() const {}; // this kind of solution doesn't work
+        virtual void Voice() const = 0; // we declare abstract method => we will have abstract class
+        // То есть здесь мы говорим компилятору, что у классов потомков может быть своя реализация метода "Voice"
+
+    private:
+        const string type_;
+    };
+
+
+# Example:
+# Notice: we should pass in function objects by reference but not by value
+# because if we pass by reference we save properties of the virtual class, so overloaded methods of child classes will be work
+    void MakeASound(const Animal& animal){
+        animal.Voice();
+    }
+
+# Example (2): how to store shilds of the base class in one container???:
+# shared_ptr<type>
+# Case 1 (general using shared_ptr)
+    #include <memory>
+    
+    int main(){
+        shared_ptr<Animal> cat;
+        cat = make_shared<Cat>();
+        cat->Voice();
+    }
+
+# Case 2 (using shared_ptr in container (for ecample in vector)):
+
+    #include <memory>
+
+    int main(){
+        vector<shared_ptr<Animal>> animals {make_shared<Cat>(), make_shared<Dog>(), make_shared<Horse>(), make_shared<Parrot>("Tom")};
+        for(const auto& animal : animals){
+            MakeASound(*animal);
+        }
+        return 0;
+    } 
+
