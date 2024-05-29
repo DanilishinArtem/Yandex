@@ -1,0 +1,61 @@
+# 1. Example of makros:
+
+    Source code:
+        int main(){
+            return 0;
+        }
+
+    Makrose code:
+        #define MY_MAIN int main()
+        #define FINISH return 0
+
+        MY_MAIN {
+            FINISH;
+        } 
+
+
+# 2. Example: (makros with parameters):
+    #include <iostream>
+    #define MY_MAIN int main()
+    #define FINISH return 0
+    #define MESSAGE(x) std::cout << x << std::endl
+
+    MY_MAIN {
+        MESSAGE("Hello World!");
+        FINISH;
+    }
+
+# 3. Example: (using makros for logging):
+    #include <iostream>
+    #include <string>
+    using namespace std;
+
+    #define AS_KV(x) #x << " = " << x
+
+    int main(){
+        int x = 4; 
+        string t = "hello";
+        bool isTrue = true;
+        cerr << AS_KV(x) << endl;
+        cerr << AS_KV(t) << endl;
+        cerr << AS_KV(isTrue) << endl;
+
+        return 0;
+    }
+
+# 4. Example: (getting filename and number of string in the source code with makros):
+    #include <iostream>
+    #include <string>
+    using namespace std;
+
+    #define AS_KV(x) #x << " = " << x
+
+    int main(){
+        string file = __FILE__;
+        int line = __LINE__;
+        string func = __func__;
+        cout << AS_KV(file) << endl;
+        cout << AS_KV(line) << endl;
+        cout << AS_KV(func) << endl;
+        return 0;
+    }

@@ -1,0 +1,45 @@
+# Setting of the problem (here is a problem that PairOfStringAndInt and PairOfBoolAndChar are simular but difference between them is types of the fields):
+    #include <iostream>
+    #include <vector>
+    #include <string>
+    using namespace std;
+
+    struct PairOfStringAndInt{
+        string first;
+        int second;
+    };
+
+    struct PairOfBoolAndChar{
+        bool first;
+        char second;
+    };
+
+    int main(){
+        PairOfStringAndInt si;
+        si.first = "Hello";
+        si.second = 5;
+
+        PairOfBoolAndChar bc;
+        bc.first = true;
+        bc.second = 'a';
+        return 0;
+    }
+
+# Solution of the problem is creation the sample of the class:
+    # template of the class (process of creation type from template is instantiation)
+    template<typename T, typename U>
+    struct Pair{
+        T first;
+        U second;
+    };
+
+    int main(){
+        Pair<string, int> si;
+        si.first = "Hello";
+        si.second = 5;
+
+        Pair<bool, char> bc;
+        bc.first = true;
+        bc.second = 'a';
+        return 0;
+    }
