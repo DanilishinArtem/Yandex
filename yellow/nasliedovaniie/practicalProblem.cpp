@@ -1,86 +1,123 @@
-#include <vector>
 #include <iostream>
-#include <string>
 #include <memory>
+#include <stack>
+#include <vector>
 
 using namespace std;
 
-class Node {
-public:
-    virtual int evaluate() {
-        return 0;
-    }
+struct Node {
+  virtual int Evaluate() const = 0;
 };
 
-class Digit : public Node {
-public:
-    Digit(int d) : d_(d) {}
-    int evaluate() override { return d_;}
+struct Value : public Node {
+  Value(char digit) : _value(digit - '0') {}
+
+  int Evaluate() const override { return _value; }
+
 private:
-    int d_;
+  const uint8_t _value;
 };
 
-class Variable : public Node {
-public:
-    Variable(const int& x) : x_(x) {}
-    int evaluate() override {
-        return x_;
-    }
+struct Variable : public Node {
+  Variable(const int &x) : _x(x) {}
+
+  int Evaluate() const override { return _x; }
+
 private:
-    int x_;
+  const int &_x;
 };
 
-class Operation : public Node {
-public:
-    Operation(char op, shared_ptr<Node> left, shared_ptr<Node> right) : op_(op), left_(left), right_(right) {}
-    int evaluate() override {
-        switch(op_){
-            case '+': return left_->evaluate() + right_->evaluate();
-            case '-': return left_->evaluate() - right_->evaluate();
-            case '*': return left_->evaluate() * right_->evaluate();
-            case '/': return left_->evaluate() / right_->evaluate();
-        }
-        return 0;
+struct Op : public Node {
+  Op(char value)
+      : precedence([value] {
+          if (value == '*') {
+            return 2;
+          } else {
+            return 1;
+          }
+        }()),
+        _op(value) {}
+
+  const uint8_t precedence;
+
+  int Evaluate() const override {
+    if (_op == '*') {
+      return _left->Evaluate() * _right->Evaluate();
+    } else if (_op == '+') {
+      return _left->Evaluate() + _right->Evaluate();
+    } else if (_op == '-') {
+      return _left->Evaluate() - _right->Evaluate();
     }
-private:
-    const char op_;
-    shared_ptr<Node> left_;
-    shared_ptr<Node> right_;
-};
-
-// Node Parse(const string& token, int& x){
-
-// }
-
-int main(){
-    string tokens = "5+7-x*x+x";    
-    // cout << "Enter expression: ";
-    cout << "Your expression: " << tokens << endl;
-    // cin >> tokens;
-    int x;
-    cout << "Enter x: ";
-    cin >> x;
-    shared_ptr<Node> var1 = make_shared<Variable>(x);
-    shared_ptr<Node> var2 = make_shared<Variable>(x);
-    shared_ptr<Node> mul1 = make_shared<Operation>('*', var1, var2);
-
-    shared_ptr<Node> digit1 = make_shared<Digit>(5);
-    shared_ptr<Node> digit2 = make_shared<Digit>(7);
-
-    shared_ptr<Node> var3 = make_shared<Variable>(x);
-
-    shared_ptr<Node> add1 = make_shared<Operation>('+', digit1, digit2);
-    shared_ptr<Node> sub1 = make_shared<Operation>('-', add1, mul1);
-    shared_ptr<Node> add2 = make_shared<Operation>('+', sub1, var3);
-
-    cout << add2->evaluate() << endl;
-    // int x;
-    // auto expr = Parse(tokens, x);
-    // cout << "Enter x: ";
-    // while(cin >> x){
-    //     cout << expr->evaluate() << endl;
-    //     cout << "Enter x: ";
-    // }
 
     return 0;
+  }
+
+  void SetLeft(shared_ptr<Node> node) { _left = node; }
+  void SetRight(shared_ptr<Node> node) { _right = node; }
+
+private:
+  const char _op;
+  shared_ptr<const Node> _left, _right;
+};
+
+template <class Iterator>
+shared_ptr<Node> Parse(Iterator token, Iterator end, const int &x) {
+  // Empty expression
+  if (token == end) {
+    return make_shared<Value>('0');
+  }
+
+  stack<shared_ptr<Node>> values;
+  stack<shared_ptr<Op>> ops;
+
+  auto PopOps = [&](int precedence) {
+    while (!ops.empty() && ops.top()->precedence >= precedence) {
+      auto value1 = values.top();
+      values.pop();
+      auto value2 = values.top();
+      values.pop();
+      auto op = ops.top();
+      ops.pop();
+
+      op->SetRight(value1);
+      op->SetLeft(value2);
+
+      values.push(op);
+    }
+  };
+
+  while (token != end) {
+    const auto &value = *token;
+    if (value >= '0' && value <= '9') {
+      values.push(make_shared<Value>(value));
+    } else if (value == 'x') {
+      values.push(make_shared<Variable>(x));
+    } else if (value == '*') {
+      PopOps(2);
+      ops.push(make_shared<Op>(value));
+    } else if (value == '+' || value == '-') {
+      PopOps(1);
+      ops.push(make_shared<Op>(value));
+    }
+
+    ++token;
+  }
+
+  while (!ops.empty()) {
+    PopOps(0);
+  }
+
+  return values.top();
+}
+
+int main() {
+  string tokens;
+
+  tokens = "x+2*x-5";
+
+  int x = 0;
+  auto node = Parse(tokens.begin(), tokens.end(), x);
+  cout << "Expression value: " << node->Evaluate() << endl;
+
+  return 0;
 }
