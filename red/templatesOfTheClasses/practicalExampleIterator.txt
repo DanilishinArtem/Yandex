@@ -1,0 +1,65 @@
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
+template<typename T>
+ostream& operator<<(ostream& out, const vector<T>& v){
+    for(const T& item : v){
+        out << item << ' ';
+    }
+    return out;
+}
+
+// Variant I
+template<typename T>
+vector<T> Head(vector<T>& v, int n){
+    n = min(n, static_cast<int>(v.size()));
+    return {v.begin(), v.begin() + n};
+}
+
+// Variant II
+template<typename Iterator>
+struct IteratorRange{
+    Iterator first, last;
+
+    Iterator begin() const{
+        return first;
+    }
+    Iterator end() const{
+        return last;
+    }
+};
+
+template<typename T>
+IteratorRange<typename vector<T>::iterator> Head2(vector<T>& v, int n){
+    // for creation of the class IteratorRange we whould use:
+    // IteratorRange<typename vector<T>::iterator> iterator;
+    n = min(n, static_cast<int>(v.size()));
+    return {v.begin(), v.begin() + n};
+};
+
+int main(){
+    vector<int> v = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    cout << "source vector: " << v << endl;
+    // it works for displaying first elements of the vector
+    for(const int& item : Head(v, 5)){
+        cout << item << ' ';
+    }
+    // we want to change first 3 elements:
+    for(int item: Head(v, 3)){
+        item = 0;
+    }
+    cout << endl;
+    cout << "changed vector for Head using: " << v << endl;
+    // changed vector: 1 2 3 4 5 6 7 8 9 10 --> output the same (because it's a copy), so let's use another variant (Head2):
+    for(int& item: Head2(v, 3)){
+        cout << item << ' ';
+        item = 0;
+    }
+    // Attention: if we use for(int item: Head2(v, 3)) it will not work (because we copy the element into item)
+    // so We need to use for(int& item: Head2(v, 3)) it will work, because we use the element by the reference
+    cout << endl;
+    cout << "changed vector for Head2 using: " << v << endl;
+    return 0;
+}

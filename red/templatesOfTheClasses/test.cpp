@@ -1,31 +1,22 @@
-#include <iostream>
-#include <vector>
-#include <string>
+#include "iterator.h"
 using namespace std;
 
-struct PairOfStringAndInt{
-    string first;
-    int second;
-};
-
-struct PairOfBoolAndChar{
-    bool first;
-    char second;
-};
-
-template<typename T, typename U>
-struct Pair{
-    T first;
-    U second;
-};
-
 int main(){
-    Pair<string, int> si;
-    si.first = "Hello";
-    si.second = 5;
+    vector<int> v = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    cout << "source vector: " << v << endl;
+    for(int& item: Head2(v, 3)){
+        item = 0;
+    }
+    cout << "changed vector for Head2 using: " << v << endl;
 
-    Pair<bool, char> bc;
-    bc.first = true;
-    bc.second = 'a';
+    IteratorRange<typename vector<int>::iterator> secondHalf = {
+        v.begin() + v.size() / 2,
+        v.end()
+    };
+    cout << "secondHalf: " << endl;
+    for(int& item : secondHalf){
+        cout << item << ' ';
+    }
+    cout << endl;
     return 0;
 }
