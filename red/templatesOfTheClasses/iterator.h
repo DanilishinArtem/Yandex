@@ -12,9 +12,11 @@ ostream& operator<<(ostream& out, const vector<T>& v){
 }
 
 template<typename Iterator>
-struct IteratorRange{
+class IteratorRange{
+private:
     Iterator first, last;
-
+public:
+    IteratorRange(Iterator first, Iterator last) : first(first), last(last){}
     Iterator begin() const{
         return first;
     }
@@ -23,10 +25,9 @@ struct IteratorRange{
     }
 };
 
-template<typename T>
-IteratorRange<typename vector<T>::iterator> Head2(vector<T>& v, int n){
-    // for creation of the class IteratorRange we whould use:
-    // IteratorRange<typename vector<T>::iterator> iterator;
+template<typename Container>
+// IteratorRange<typename Container::iterator> Head(Container& v, int n){
+auto Head(Container& v, int n){
     n = min(n, static_cast<int>(v.size()));
-    return {v.begin(), v.begin() + n};
+    return IteratorRange<typename Container::iterator>{v.begin(), next(v.begin(), n)};
 };
