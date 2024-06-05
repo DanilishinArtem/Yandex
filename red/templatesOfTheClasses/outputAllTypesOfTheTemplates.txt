@@ -1,0 +1,69 @@
+# We can get all types using ouput through auto type
+# Head part:
+    #include <iostream>
+    #include <vector>
+    #include <string>
+    using namespace std;
+
+    template<typename T>
+    ostream& operator<<(ostream& out, const vector<T>& v){
+        for(const T& item : v){
+            out << item << ' ';
+        }
+        return out;
+    }
+
+    template<typename Iterator>
+    class IteratorRange{
+    private:
+        Iterator first, last;
+    public:
+        IteratorRange(Iterator first, Iterator last) : first(first), last(last){}
+        Iterator begin() const{
+            return first;
+        }
+        Iterator end() const{
+            return last;
+        }
+    };
+
+    template<typename Container>
+    // IteratorRange<typename Container::iterator> Head(Container& v, int n){
+    auto Head(Container& v, int n){
+        n = min(n, static_cast<int>(v.size()));
+        return IteratorRange{v.begin(), next(v.begin(), n)};
+    };
+
+# main part:
+    #include "iterator.h"
+    #include <set>
+    #include <queue>
+    using namespace std;
+
+    int main(){
+        vector<int> v = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        cout << "source vector: " << v << endl;
+        for(int& item: Head(v, 3)){
+            item = 0;
+        }
+
+        set<int> nums = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        for(int item : Head(nums, 4)){
+            cout << item << ' ';
+        }
+        cout << endl;
+
+        deque<int> numsd = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        for(int item : Head(numsd, 4)){
+            cout << item << ' ';
+        }
+        cout << endl;
+
+        // it will not work, because we use const variable
+        const deque<int> const_numsd = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        for(int item : Head(const_numsd, 4)){
+            cout << item << ' ';
+        }
+        cout << endl;
+        return 0;
+    }

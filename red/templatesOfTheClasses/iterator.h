@@ -29,5 +29,5 @@ template<typename Container>
 // IteratorRange<typename Container::iterator> Head(Container& v, int n){
 auto Head(Container& v, int n){
     n = min(n, static_cast<int>(v.size()));
-    return IteratorRange<typename Container::iterator>{v.begin(), next(v.begin(), n)};
+    return IteratorRange{v.begin(), next(v.begin(), n)};
 };

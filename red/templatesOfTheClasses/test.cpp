@@ -27,5 +27,6 @@ int main(){
     for(int item : Head(const_numsd, 4)){
         cout << item << ' ';
     }
+    cout << endl;
     return 0;
 }

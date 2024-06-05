@@ -1,0 +1,37 @@
+# Comment: in the terminal we can use command "time ./a.out" for calculating time of execution of the program
+
+# head part:
+    #include <string>
+    #include <vector>
+    #include <chrono>
+
+    using namespace std;
+
+    auto start(){
+        auto start = chrono::steady_clock::now();
+        return start;
+    }
+
+    void finish(auto start, string message){
+        cout << "Time of working " << message << ": " << chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - start).count() << endl;
+    }
+
+    vector<string> GenerateBigVector(int size){
+        vector<string> result;
+        for(size_t i = 0; i < size; i++){
+            result.push_back(to_string(i));
+            // result.insert(result.end(), to_string(i));
+        }
+        return result;
+    }
+
+# main part:
+    #include <iostream>
+    #include "lib.h"
+
+    int main(){
+        auto st = start();
+        cout << GenerateBigVector(2800000).size() << endl;
+        finish(st, "GenerateBigVector");
+        return 0;
+    }
