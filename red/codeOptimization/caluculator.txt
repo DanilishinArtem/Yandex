@@ -1,0 +1,63 @@
+#include <iostream>
+using namespace std;
+
+
+class calculatExpression{
+public:
+    void calculate(string expression){
+        int i = 0;
+        string first_;
+        string second_;
+        while(expression[i] != '+' && expression[i] != '-' && expression[i] != '*' && expression[i] != '/'){
+            if(expression[i] == ' '){
+                i++;
+            }else{
+                first_ += expression[i];
+                i++;
+            }
+        }
+        first = stof(first_);
+        cout << first << endl;
+        operation = expression[i];
+        i++;
+        while(i < expression.size()){
+            if(expression[i] == ' '){
+                i++;
+            }else{
+                second_ += expression[i];
+                i++;
+            }
+        }
+        second = stof(second_);
+    }
+    ~calculatExpression(){
+        cout << first << " " << operation << " " << second << " = ";
+        if(operation == '+'){
+            cout << first + second << endl;
+        } else if(operation == '-'){
+            cout << first - second << endl;
+        } else if(operation == '*'){
+            cout << first * second << endl;
+        } else if(operation == '/'){
+            cout << first / second << endl;
+        }
+    }
+private:
+    char operation;
+    float first;
+    float second;
+};
+
+
+int main(){
+    while(true){
+        cout << "Enter expression: " << endl;
+        string expression;
+        cin >> expression;
+        {
+            calculatExpression calc;
+            calc.calculate(expression);
+        }
+    }
+    return 0;
+}

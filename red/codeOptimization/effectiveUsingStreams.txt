@@ -1,0 +1,41 @@
+
+# This code not at each step of iteration dump the buffer to the file
+    ofstream out("output.txt");
+    for(size_t i = 0; i < 25; i++){
+        out << "London is the capital of Great Britain. "
+            << "I am travelling douwn the river"
+            << "\n";
+    }
+
+# Experiment of using '\n' and endl (endl each time of using make a dump to the file): 
+    #include <iostream>
+    #include <vector>
+    #include <fstream>
+    #include "lib.h"
+    using namespace std;
+
+    int main(){
+        {
+            LOG_DURATION("using_return_string");
+            ofstream out("output.txt");
+            for(size_t i = 0; i < 250000; i++){
+                out << "London is the capital of Great Britain. "
+                    << "I am travelling douwn the river"
+                    << "\n";
+            }
+            // result: Duration of execution using_return_string: 28 ms
+        }
+        {
+            LOG_DURATION("using_endl");
+            ofstream out("output.txt");
+            for(size_t i = 0; i < 250000; i++){
+                out << "London is the capital of Great Britain. "
+                    << "I am travelling douwn the river"
+                    << endl;
+            }
+            // result: Duration of execution using_endl: 436 ms
+        }
+        return 0;
+    }
+
+    
