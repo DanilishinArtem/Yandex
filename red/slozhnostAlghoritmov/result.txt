@@ -1,0 +1,11 @@
+[testing testAddingElements]
+Duration of execution vector: 355 ms
+Duration of execution deque: 4 ms
+[testing testLowerBound]
+1000000
+Duration of execution global_lower_bound: 43 ms
+1000000
+Duration of execution method_lower_bound: 0 ms
+[testing testFindIf]
+Duration of execution lower_bound: 0 ms
+Duration of execution find_if: 20665 ms
