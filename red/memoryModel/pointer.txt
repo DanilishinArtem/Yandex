@@ -1,0 +1,31 @@
+#types:
+    1. const T* ptr - pointer to the const type (*ptr is unchangable)
+    2. T* const ptr - constant pointer to the type (*ptr is changable)
+    3. const T* const ptr - constant pointer to the constant type (*ptr is unchangable)
+    4. *ptr - just pointer
+
+#Example:
+    #include <iostream>
+    using namespace std;
+
+    int main(){
+        int x = 5;
+        int* px = &x;
+        const int* cpx = &x;
+        int* const pxc = &x;
+        const int* const cpxc = &x;
+
+        // testing of px:
+        *px = 1;
+        px++;
+        // testing of cpx:
+        // *cpx = 1; // error (changing const value)
+        cpx++;
+        // testing of pxc:
+        *pxc = 1;
+        // pxc++; // error (changing const pointer)
+        // testing of cpxc:
+        // *cpxc = 1; // error (changing const value)
+        // cpxc++; // error (changing const pointer)
+        return 0;
+    }

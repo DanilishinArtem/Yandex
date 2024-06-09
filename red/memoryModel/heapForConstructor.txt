@@ -1,0 +1,22 @@
+# Example:
+    #include <algorithm>
+    #include <iostream>
+    #include <string>
+    #include <vector>
+    using namespace std;
+
+    struct Widget{
+        Widget(){
+            cout << "consctructor" << endl;
+        }
+        ~Widget(){
+            cout << "destructor" << endl;
+        }
+    };
+
+    int main(){
+        Widget *w = new Widget;
+        delete w; // here deleting object Widget
+        // if we doesn't use delete, destructor will not be called
+        return 0;
+    }

@@ -1,0 +1,49 @@
+# Every call allocate a heap space in the memory:
+    Declaration: int* x = new int;
+    Model:
+        int* x   ------------->   int
+        [stack]                   [heap]
+
+# Разыменовывание:
+    string* s = new string;
+    *s = "Hello";
+    cout << *s << " " << s->size() << endl;
+    string& ref_to_s = *s;
+    ref_to_s += " World!";
+    cout << *s << endl;
+
+# Initialization:
+    int* pInt = new int(43);
+
+# Memory leaking: when we lose pointer to the memory area
+# Example:
+    int main(){
+        {
+            int* pointer = new pointer;
+        }
+        // here we already doesn't have a pointer, so we can't refer to the area of the memory!!!
+    }  
+
+# Second example:
+    #include <algorithm>
+    #include <iostream>
+    #include <string>
+    #include <vector>
+    #include <random>
+    using namespace std;
+
+    int main(){
+        int n;
+        cin >> n;
+        mt19937_64 random_gen;
+        uint64_t sum = 0;
+        for(int i = 0; i < n; i++){
+            // this type of realization is not good (memory leak), we should also delete x 
+            auto x = new uint64_t;
+            *x = random_gen();
+            sum += *x;
+            delete x;
+        }
+        cout << sum << endl;
+        return 0;
+    }

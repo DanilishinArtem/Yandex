@@ -1,2 +1,2 @@
-// F:\c-plus-plus-modern-development\c-plus-plus-red\02_printsipy-optimizatsii-koda-slozhnost-alghoritmov-i-effiektivnoie-ispol-zovaniie\03_slozhnost-alghoritmov
-[3]
+// F:\c-plus-plus-modern-development\c-plus-plus-red\04_effiektivnoie-ispol-zovaniie-linieinykh-kontieinierov\01_effiektivnoie-ispol-zovaniie-linieinykh-kontieinierov
+// [1]

@@ -1,0 +1,42 @@
+#Example 1:
+    #include <iostream>
+    using namespace std;
+
+    int main(){
+        int a = 43;
+        int b = 71;
+        int c = 89;
+        cout << *(&b - 1) <<  " " << *(&b + 1) << endl;
+        return 0;
+    }
+
+#Example 2:
+    #include <iostream>
+    using namespace std;
+
+    void f(){
+        int a = 431;
+        int b = 711;    
+    }
+
+    int main(){
+        int c = 89;
+        for(int i = 0; i < 20; i++){
+            f();
+            int x = *(&c - i);
+            cout << i << ' ' << x << endl;
+        }
+        return 0;
+    }
+
+#Example 3:
+    #include <iostream>
+    using namespace std;
+
+    int main(){
+        int c = 3;
+        int* d = &c;
+        int* e = d + 1; // e = d + sizeof(int)
+        cout << d << endl << e << endl;
+        return 0;
+    }

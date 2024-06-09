@@ -1,0 +1,54 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+template<typename T>
+class SimpleVector {
+public:
+    explicit SimpleVector(size_t size){
+        data = new T[size];
+        end_ = data + size;
+    };
+    ~SimpleVector(){
+        delete[] data;
+    };
+    T& operator[](size_t index){
+        return data[index];
+    }
+    // this is pair of iterators for non constant methods:
+    T* begin() {
+        return data;
+    }
+    T* end() {
+        return end_;
+    }
+    // this is pair of iterators for constant methods:
+    const T* begin() const {
+        return data;
+    }
+    const T* end() const {
+        return end_;
+    }
+private:
+    T* data;
+    T* end_;
+};
+
+template<typename T>
+ostream& operator<<(ostream& out, const SimpleVector<T>& v){
+    for(const T& item : v){
+        out << item << ' ';
+    }
+    return out;
+}
+
+int main(){
+    SimpleVector<int> v(10);
+    for(int i = 0; i < 10; i++){
+        v[i] = 10 - i;
+    }
+    sort(v.begin(), v.end());
+    cout << v;
+    cout << endl;
+    return 0;
+}
